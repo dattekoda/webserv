@@ -1,0 +1,54 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-c",
+      "-o",
+      "main.o",
+      "main.c"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/main.c",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-c",
+      "-o",
+      "send_recv.o",
+      "send_recv.c"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/send_recv.c",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/send_recv.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-c",
+      "-o",
+      "server4.o",
+      "server4.c"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/server4.c",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/server4.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-c",
+      "-o",
+      "server_socket.o",
+      "server_socket.c"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/server_socket.c",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/server_socket.o"
+  }
+]
