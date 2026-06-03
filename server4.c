@@ -18,7 +18,7 @@
 #include <sysexits.h>
 #include <unistd.h>
 
-#define	MAX_CHILD	20
+#define	MAX_CHILD	32
 
 int	send_recv(int acc, int child_no);
 
