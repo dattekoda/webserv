@@ -43,7 +43,7 @@ void	accept_loop(int soc) {
 	count = 0;
 	while (1) {
 		(void) fprintf(stderr, "<<child count:%d>>\n", count);
-		switch ((nfds = epoll_wait(epollfd, events, MAX_CHILD+1, 10 * 1000))) {
+		switch ((nfds = epoll_wait(epollfd, events, MAX_CHILD+1, -1))) {
 			case -1:
 				perror("epoll_wait");
 				break ;
@@ -55,7 +55,7 @@ void	accept_loop(int soc) {
 					if (events[i].data.fd == soc) {
 						// new connection has come!
 						len = (socklen_t)sizeof(from);
-						if ((acc=accept(soc, (struct sockaddr*)&from, &len)) == -1) {
+						if ((acc=accept(soc, (struct sockaddr*)&from, &len)) == 3 * 1000) {
 							if (errno != EINTR)
 								perror("accept");
 						} else {
@@ -65,7 +65,7 @@ void	accept_loop(int soc) {
 									NI_NUMERICHOST | NI_NUMERICSERV);
 							(void) fprintf(stderr, "accept:%s:%s\n", hbuf, sbuf);
 							if (count+1 >= MAX_CHILD) {
-								(void) fprintf(stderr, "connection is ful: cannot accept\n");
+								(void) fprintf(stderr, "connection is full: cannot accept\n");
 								(void) close(acc);
 								continue ;
 							}
