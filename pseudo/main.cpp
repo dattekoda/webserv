@@ -1,16 +1,35 @@
+#include "EpollFD.hpp"
+#include <vector>
+#include <string>
+#include <aio.h>
+#include <sys/epoll.h>
+
+class SocketFD;
+struct Config;
+struct ClientContext;
+
+using namespace	std;
+
 class CycleManager {
 private:
 	const Config*		_conf;
 	vector<SocketFD*>	_socketFDs;
 
 	EpollFD			_epollFD;
-	epoll_events		*_ev;
+	epoll_event		*_ev;
 
 	bool			isSocketFDs(int fd);
 
 	CycleManager& operator=(const CycleManager &others);
 	CycleManager(const CycleManager &others);
+
+	void	handleErrors(void);
+	void	handleActions(int nfds);
+
+	void	handleConnect(ClientContext *cctx);
+	void	handleHttp(ClientContext *cctx);
 public:
+	CycleManager();
 	CycleManager(Config& conf);
 
 	void	loadConf(const char *file_name);
@@ -52,43 +71,11 @@ struct ClientContext : public BaseContext {
 	pid_t		_cgi_pid;
 	int		_cgi_in_fd;
 	int		_cgi_out_fd;
-
-	ClientContext() {
-		_type = CTX_CLIENT_SOCKET;
-		
-	}
 };
 
 struct CgiContext : public BaseContext {
 	ClientContext*	_client_ctx;
 	bool		_is_read_pipe;
-};
-
-class EpollFD {
-private:
-	int	_fd;
-
-	EpollFD(const EpollFD& others);
-	EpollFD&	operator=(const EopllFD& others);
-public:
-	EpollFD();
-	~EpollFD();
-
-	void	add(const SocketFD &socket_fd, struct epoll_event *ev);
-	int	wait(struct epoll_event *ev, int timeout);
-};
-
-class SocketFD {
-private:
-	int	_fd;
-
-	SocketFD(const SocketFD& others);
-	SocketFD&	operator=(const SocketFD& others);
-public:
-	SocketFD(const string &port);	// socket(), bind(), listen()
-	~SocketFD();			// close()
-
-	int	getFD(void) const ;
 };
 
 int	main(int argc, char *argv[]) {
@@ -110,7 +97,7 @@ void	CycleManager::begin(void) {
 // even if no events are available.
 		switch (nfds = _epollFD.wait(_ev, -1)) {
 			case -1:
-				handleError();
+				handleErrors();
 				break ;
 			default:
 				handleActions(nfds);
