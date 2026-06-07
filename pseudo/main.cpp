@@ -36,6 +36,13 @@ public:
 	void	begin(void);
 };
 
+class PortManager {
+private:
+	const Config*	_conf;
+public:
+
+};
+
 typedef enum {
 	STATE_READ_REQLINE,
 	STATE_READ_HEADER,
@@ -55,27 +62,18 @@ typedef enum {
 	CTX_CGI_PIPE
 }	ContextType;
 
-struct BaseContext {
+// TODO: consider _buf a different data structure
+struct ClientContext {
 	int		_fd;
-	ContextType	_ctx;
-	virtual		~BaseContext() {}
-};
 
-struct ClientContext : public BaseContext {
-	ClientState	_state;
 	vector<char>	_buf;
 	vector<char>	_cgi_res_buf;
-	size_t		_buffer_len;
+
 	size_t		_content_length;
 
 	pid_t		_cgi_pid;
 	int		_cgi_in_fd;
 	int		_cgi_out_fd;
-};
-
-struct CgiContext : public BaseContext {
-	ClientContext*	_client_ctx;
-	bool		_is_read_pipe;
 };
 
 int	main(int argc, char *argv[]) {
@@ -115,5 +113,11 @@ void	CycleManager::handleActions(int nfds) {
 		else
 			handleHttp(cctx);
 	}
+}
+
+void	CycleManager::handleConnect(ClientContext *cctx) {
+}
+
+void	CycleManager::handleHttp(ClientContext *cctx) {
 }
 
