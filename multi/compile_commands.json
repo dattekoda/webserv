@@ -1,0 +1,36 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-std=c++98",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "main.o",
+      "main.cpp"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming/multi",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/multi/main.cpp",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/multi/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-std=c++98",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "Server.o",
+      "Server.cpp"
+    ],
+    "directory": "/home/ubuntu/cursus/5/webserv/network_programming/multi",
+    "file": "/home/ubuntu/cursus/5/webserv/network_programming/multi/Server.cpp",
+    "output": "/home/ubuntu/cursus/5/webserv/network_programming/multi/Server.o"
+  }
+]

@@ -10,7 +10,7 @@ int	main(int argc, char *argv[]) {
 		SocketFD	sfd(argv[1]);
 		std::cerr << "ready for accept\n" << std::endl;
 		Server	serv(sfd);
-		// CycleManager.run();
+		serv.run();
 	} catch (const std::runtime_error &e) {
 		std::cerr << e.what();
 		return 1;

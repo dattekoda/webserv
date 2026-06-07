@@ -5,7 +5,12 @@
 
 class	SocketFD {
 private:
-	int	_fd;
+	int	fd_;
+
+	void	setOptimalSocket(const struct addrinfo *res);
+
+	SocketFD(const SocketFD& others);
+	SocketFD&	operator=(const SocketFD& others);
 public:
 	SocketFD(const std::string &portnum);
 	~SocketFD();

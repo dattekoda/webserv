@@ -1,17 +1,36 @@
 #ifndef MANAGER_HPP
 # define MANAGER_HPP
 
-# include "Socket.hpp"
+# include "SocketFD.hpp"
 # include <sys/epoll.h>
 
-class	Server {
-	int		_epollFD;
-	SocketFD	_socketFD;
+# ifndef MAX_CHILD
+#  define MAX_CHILD 32
+# endif
 
-	epoll_event	*_ev_arr;
+class	Server {
+	int		epollFD_;
+	SocketFD	socketFD_;
+
+	epoll_event	*ev_arr_;
+
+	int		count_;
+	int		nfds_;
+
+	void		handleActions(void);
+
+	void		accept(void);
+	void		processEvents(int i);
+
+	int		handleIO(int i);
+
+	Server(const Server& others);
+	Server&	operator=(const Server &others);
 public:
 	Server(const SocketFD &sfd);
 	~Server();
+
+	void	run(void);
 };
 
 #endif
