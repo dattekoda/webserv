@@ -1,4 +1,5 @@
 #include "SocketFD.hpp"
+#include "Fdlib.hpp"
 #include <fcntl.h>
 #include <stdexcept>
 #include <string.h>
@@ -22,7 +23,8 @@ SocketFD::SocketFD(const std::string &portnum) : fd_(-1) {
 	try {
 		setOptimalSocket(res);
 	} catch (const std::runtime_error &e) {
-		::close(fd_);
+		if (fd_ != -1)
+			::close(fd_);
 		freeaddrinfo(res);
 		throw ;
 	}
@@ -31,8 +33,7 @@ SocketFD::SocketFD(const std::string &portnum) : fd_(-1) {
 		::close(fd_);
 		throw std::runtime_error("listen() failed");
 	}
-	int	flags = ::fcntl(fd_, F_GETFL, 0);
-	if (flags < 0 || fcntl(fd_, F_SETFL, flags | O_NONBLOCK) < 0) {
+	if (Fdlib::setNonblock(fd_) < 0) {
 		::close(fd_);
 		throw std::runtime_error("fcntl() failed");
 	}
@@ -46,11 +47,17 @@ void	SocketFD::setOptimalSocket(const struct addrinfo *res) {
 		if (fd_ < 0)
 			throw std::runtime_error("socket() failed");
 		// set for avoiding 'Address already in use'
-		if (::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+		if (::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+			::close(fd_);
 			throw std::runtime_error("setsockopt() failed");
-		if (::bind(fd_, rp->ai_addr, rp->ai_addrlen) < 0)
-			throw std::runtime_error("bind() failed");
+		}
+		if (::bind(fd_, rp->ai_addr, rp->ai_addrlen) == 0)
+			break ;
+		::close(fd_);
+		fd_ = -1;
 	}
+	if (fd_ == -1)
+		throw std::runtime_error("could not bind to any address");
 }
 
 SocketFD::~SocketFD() {
