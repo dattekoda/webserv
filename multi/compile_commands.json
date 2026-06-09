@@ -1,5 +1,6 @@
 [
   {
+    "file": "main.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -8,15 +9,15 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
+      "main.cpp",
       "-o",
-      "main.o",
-      "main.cpp"
+      "main.o"
     ],
-    "directory": "/home/ubuntu/cursus/5/webserv/network_programming/multi",
-    "file": "/home/ubuntu/cursus/5/webserv/network_programming/multi/main.cpp",
-    "output": "/home/ubuntu/cursus/5/webserv/network_programming/multi/main.o"
+    "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
+    "output": "main.o"
   },
   {
+    "file": "Config.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -25,12 +26,62 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
+      "Config.cpp",
       "-o",
-      "Server.o",
-      "Server.cpp"
+      "Config.o"
     ],
-    "directory": "/home/ubuntu/cursus/5/webserv/network_programming/multi",
-    "file": "/home/ubuntu/cursus/5/webserv/network_programming/multi/Server.cpp",
-    "output": "/home/ubuntu/cursus/5/webserv/network_programming/multi/Server.o"
+    "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
+    "output": "Config.o"
+  },
+  {
+    "file": "Fdlib.cpp",
+    "arguments": [
+      "/usr/bin/c++",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-std=c++98",
+      "-Iinclude",
+      "-c",
+      "Fdlib.cpp",
+      "-o",
+      "Fdlib.o"
+    ],
+    "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
+    "output": "Fdlib.o"
+  },
+  {
+    "file": "SocketFD.cpp",
+    "arguments": [
+      "/usr/bin/c++",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-std=c++98",
+      "-Iinclude",
+      "-c",
+      "SocketFD.cpp",
+      "-o",
+      "SocketFD.o"
+    ],
+    "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
+    "output": "SocketFD.o"
+  },
+  {
+    "file": "Server.cpp",
+    "arguments": [
+      "/usr/bin/c++",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-std=c++98",
+      "-Iinclude",
+      "-c",
+      "Server.cpp",
+      "-o",
+      "Server.o"
+    ],
+    "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
+    "output": "Server.o"
   }
 ]

@@ -4,22 +4,28 @@ CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98
 
 INCFLAGS	=	-Iinclude
 
-SRCS		=	main.cpp \
-			SocketFD.cpp \
-			Server.cpp
+SRCDIR		=	src
+SRCS		=	$(addprefix $(SRCDIR)/, \
+				main.cpp \
+				Config.cpp \
+				Fdlib.cpp \
+				SocketFD.cpp \
+				Server.cpp \
+			)
 
-OBJS		=	$(SRCS:.cpp=.o)
-
+OBJDIR		=	obj
+OBJS		=	$(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRCS))
 
 all:	$(NAME)
 $(NAME):	$(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-%.o: %.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) -r $(OBJDIR)
 
 fclean: clean
 	$(RM) $(NAME)

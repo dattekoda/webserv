@@ -21,5 +21,7 @@ struct	ServerConfig {
 	Host	host_;
 };
 
+void	loadConfig(const std::string &file_name, struct Config *conf);
+
 #endif
 

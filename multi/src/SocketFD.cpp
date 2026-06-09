@@ -12,30 +12,34 @@ SocketFD::SocketFD(const std::string &portnum) : fd_(-1) {
 	struct addrinfo	hints, *res;
 	int		errcode;
 
-	::memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_INET;		// using ipv4
-	hints.ai_socktype = SOCK_STREAM;	// using tcp
-	hints.ai_flags = AI_PASSIVE;		// mean you can receive all of ip addresses.
-	errcode = ::getaddrinfo(NULL, portnum.c_str(), &hints, &res);
-	// get suitable address undirectional list based on 2 inputs, portnum and hints
-	if (errcode != 0)
-		throw std::runtime_error(gai_strerror(errcode));
 	try {
-		setOptimalSocket(res);
-	} catch (const std::runtime_error &e) {
-		if (fd_ != -1)
-			::close(fd_);
+		::memset(&hints, 0, sizeof(hints));
+		hints.ai_family = AF_INET;		// using ipv4
+		hints.ai_socktype = SOCK_STREAM;	// using tcp
+		hints.ai_flags = AI_PASSIVE;		// mean you can receive all of ip addresses.
+		errcode = ::getaddrinfo(NULL, portnum.c_str(), &hints, &res);
+		// get suitable address undirectional list based on 2 inputs, portnum and hints
+		if (errcode != 0)
+			throw std::runtime_error(gai_strerror(errcode));
+		try {
+			setOptimalSocket(res);
+		} catch (const std::runtime_error &e) {
+			if (fd_ != -1)
+				::close(fd_);
+			freeaddrinfo(res);
+			throw ;
+		}
 		freeaddrinfo(res);
-		throw ;
-	}
-	freeaddrinfo(res);
-	if (listen(fd_, SOMAXCONN) < 0) {
-		::close(fd_);
-		throw std::runtime_error("listen() failed");
-	}
-	if (Fdlib::setNonblock(fd_) < 0) {
-		::close(fd_);
-		throw std::runtime_error("fcntl() failed");
+		if (listen(fd_, SOMAXCONN) < 0) {
+			::close(fd_);
+			throw std::runtime_error("listen() failed");
+		}
+		if (Fdlib::setNonblock(fd_) < 0) {
+			::close(fd_);
+			throw std::runtime_error("fcntl() failed");
+		}
+	} catch (const std::exception &e) {
+		throw std::runtime_error(std::string(e.what()) + ": " + portnum );
 	}
 }
 
@@ -57,7 +61,7 @@ void	SocketFD::setOptimalSocket(const struct addrinfo *res) {
 		fd_ = -1;
 	}
 	if (fd_ == -1)
-		throw std::runtime_error("could not bind to any address");
+		throw std::runtime_error("Already in use");
 }
 
 SocketFD::~SocketFD() {

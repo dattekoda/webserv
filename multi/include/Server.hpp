@@ -20,13 +20,15 @@ class	Server {
 
 	void		handleActions(void);
 
-	void		addFD(void);
+	void		accept(int fd);
 	void		processEvents(int i);
 
+	bool		isMonitoringFDs(int fd);
 	int		handleIO(int i);
 
 	void		setSockets(const std::vector<ServerConfig> &servers);
 	void		addSockets(void);
+
 	Server(const Server& others);
 	Server&	operator=(const Server &others);
 public:
