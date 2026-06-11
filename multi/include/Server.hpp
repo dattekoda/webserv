@@ -10,7 +10,14 @@
 #  define MAX_CHILD 32
 # endif
 
-class	Server {
+class IEpollModifier {
+public:
+	virtual	~IEpollModifier() {}
+
+	virtual int	epollAdd(int fd, uint32_t event) = 0;
+};
+
+class	Server : public IEpollModifier {
 	int		epollFD_;
 	epoll_event	*ev_arr_;
 	int		count_;
@@ -36,6 +43,7 @@ public:
 	~Server();
 
 	void	run(void);
+	int	epollAdd(int fd, uint32_t event);
 };
 
 #endif

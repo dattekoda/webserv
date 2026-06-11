@@ -1,6 +1,6 @@
 [
   {
-    "file": "main.cpp",
+    "file": "src/main.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -9,15 +9,15 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
-      "main.cpp",
+      "src/main.cpp",
       "-o",
-      "main.o"
+      "obj/main.o"
     ],
     "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
-    "output": "main.o"
+    "output": "obj/main.o"
   },
   {
-    "file": "Config.cpp",
+    "file": "src/Config.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -26,15 +26,15 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
-      "Config.cpp",
+      "src/Config.cpp",
       "-o",
-      "Config.o"
+      "obj/Config.o"
     ],
     "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
-    "output": "Config.o"
+    "output": "obj/Config.o"
   },
   {
-    "file": "Fdlib.cpp",
+    "file": "src/Fdlib.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -43,15 +43,15 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
-      "Fdlib.cpp",
+      "src/Fdlib.cpp",
       "-o",
-      "Fdlib.o"
+      "obj/Fdlib.o"
     ],
     "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
-    "output": "Fdlib.o"
+    "output": "obj/Fdlib.o"
   },
   {
-    "file": "SocketFD.cpp",
+    "file": "src/SocketFD.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -60,15 +60,15 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
-      "SocketFD.cpp",
+      "src/SocketFD.cpp",
       "-o",
-      "SocketFD.o"
+      "obj/SocketFD.o"
     ],
     "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
-    "output": "SocketFD.o"
+    "output": "obj/SocketFD.o"
   },
   {
-    "file": "Server.cpp",
+    "file": "src/Server.cpp",
     "arguments": [
       "/usr/bin/c++",
       "-Wall",
@@ -77,11 +77,11 @@
       "-std=c++98",
       "-Iinclude",
       "-c",
-      "Server.cpp",
+      "src/Server.cpp",
       "-o",
-      "Server.o"
+      "obj/Server.o"
     ],
     "directory": "/home/khanadat/cursus/5/webserv/network_programming/multi",
-    "output": "Server.o"
+    "output": "obj/Server.o"
   }
 ]

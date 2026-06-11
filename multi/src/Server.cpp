@@ -55,12 +55,8 @@ void	Server::setSockets(const std::vector<ServerConfig> &servers) {
 }
 
 void	Server::addSockets(void) {
-	struct epoll_event	ev;
-
 	for (size_t i = 0; i < socketFDs_.size(); ++i) {
-		ev.data.fd = socketFDs_[i]->getFD();
-		ev.events = EPOLLIN;
-		if (::epoll_ctl(epollFD_, EPOLL_CTL_ADD, socketFDs_[i]->getFD(), &ev) < 0)
+		if (epollAdd(socketFDs_[i]->getFD(), EPOLLIN) < 0)
 			throw std::runtime_error("epoll_ctl() failed");
 	}
 }
@@ -121,14 +117,19 @@ void	Server::accept(int fd) {
 		::close(arrivedFD);
 		throw std::runtime_error("fcntl() failed");
 	}
-	epoll_event		ev;
-	ev.data.fd = arrivedFD;
-	ev.events = EPOLLIN;
-	if (epoll_ctl(epollFD_, EPOLL_CTL_ADD, arrivedFD, &ev) < 0) {
+	if (epollAdd(arrivedFD, EPOLLIN) < 0) {
 		::close(arrivedFD);
 		throw std::runtime_error("epoll_ctl() failed");
 	}
 	++count_;
+}
+
+int	Server::epollAdd(int fd, uint32_t event_type) {
+	struct epoll_event	ev;
+
+	ev.events = event_type;
+	ev.data.fd = fd;
+	return ::epoll_ctl(epollFD_, EPOLL_CTL_ADD, fd, &ev);
 }
 
 void	Server::processEvents(int i) {
