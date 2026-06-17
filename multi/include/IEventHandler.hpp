@@ -3,11 +3,16 @@
 
 #include <stdint.h>
 
+enum	HandleResult {
+	HR_CONTINUE,
+	HR_CLOSE
+};
+
 class IEventHandler {
 public:
 	virtual	~IEventHandler() {}
 
-	virtual void	handleEvent(int fd, uint32_t events) = 0;
+	virtual HandleResult	handleEvent(int fd, uint32_t events) = 0;
 };
 
 #endif

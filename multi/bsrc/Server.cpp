@@ -14,49 +14,49 @@
 #include <unistd.h>
 
 Server::Server(const Config *conf) :
-	epollFD_(-1),
-	ev_arr_(0),
+	epollFd_(-1),
+	evArr_(0),
 	count_(0),
 	nfds_(-1),
 	conf_(conf) {
 	try {
 		Server::setSockets(conf_->servers_);
-		epollFD_ = ::epoll_create(1);
-		if (epollFD_ < 0)
+		epollFd_ = ::epoll_create(1);
+		if (epollFd_ < 0)
 			throw std::runtime_error("epoll_create failed");
 		Server::addSockets();
-		ev_arr_ = new epoll_event[MAX_CHILD];
+		evArr_ = new epoll_event[MAX_CHILD];
 	} catch (const std::exception& e) {
-		if (epollFD_ != -1)
-			::close(epollFD_);
-		for (size_t i = 0; i < socketFDs_.size(); ++i)
-			delete socketFDs_[i];
-		socketFDs_.clear();
-		delete[] ev_arr_;
+		if (epollFd_ != -1)
+			::close(epollFd_);
+		for (size_t i = 0; i < socketFds_.size(); ++i)
+			delete socketFds_[i];
+		socketFds_.clear();
+		delete[] evArr_;
 		throw ;
 	}
 }
 
 Server::~Server() {
-	if (epollFD_ != -1)
-		close(epollFD_);
-	delete[] ev_arr_;
-	for (size_t i = 0; i < socketFDs_.size(); ++i)
-		delete socketFDs_[i];
-	socketFDs_.clear();
+	if (epollfd_ != -1)
+		close(epollFd_);
+	delete[] evArr_;
+	for (size_t i = 0; i < socketFds_.size(); ++i)
+		delete socketFds_[i];
+	socketFds_.clear();
 }
 
 void	Server::setSockets(const std::vector<ServerConfig> &servers) {
-	socketFDs_.reserve(servers.size());
+	socketFds_.reserve(servers.size());
 	for (size_t i = 0; i < servers.size(); ++i) {
 		SocketFD*	sfdPtr = new SocketFD(servers[i].host_.port_);
-		socketFDs_.push_back(sfdPtr);
+		socketFds_.push_back(sfdPtr);
 	}
 }
 
 void	Server::addSockets(void) {
-	for (size_t i = 0; i < socketFDs_.size(); ++i) {
-		if (epollAdd(socketFDs_[i]->getFD(), EPOLLIN) < 0)
+	for (size_t i = 0; i < socketFds_.size(); ++i) {
+		if (epollAdd(socketFds_[i]->getFD(), EPOLLIN) < 0)
 			throw std::runtime_error("epoll_ctl() failed");
 	}
 }
@@ -64,7 +64,7 @@ void	Server::addSockets(void) {
 void	Server::run(void) {
 	while (true) {
 		std::cerr << "<<child count " << count_ << ">>" << std::endl;
-		switch((nfds_ = epoll_wait(epollFD_, ev_arr_, MAX_CHILD, -1))) {
+		switch((nfds_ = epoll_wait(epollFd_, evArr_, MAX_CHILD, -1))) {
 			case -1:
 				throw std::runtime_error("epoll_wait() failed");
 			case 0:
@@ -77,8 +77,8 @@ void	Server::run(void) {
 }
 
 bool	Server::isMonitoringFDs(int fd) {
-	for (size_t i = 0; i < socketFDs_.size(); ++i) {
-		if (fd == socketFDs_[i]->getFD())
+	for (size_t i = 0; i < socketFds_.size(); ++i) {
+		if (fd == socketFds_[i]->getFD())
 			return true;
 	}
 	return false;
@@ -86,8 +86,8 @@ bool	Server::isMonitoringFDs(int fd) {
 
 void	Server::handleActions(void) {
 	for (int i = 0; i < nfds_; ++i) {
-		if (isMonitoringFDs(ev_arr_[i].data.fd)) {
-			Server::accept(ev_arr_[i].data.fd);
+		if (isMonitoringFDs(evArr_[i].data.fd)) {
+			Server::accept(evArr_[i].data.fd);
 			continue ;
 		}
 		Server::processEvents(i);
@@ -129,17 +129,17 @@ int	Server::epollAdd(int fd, uint32_t event_type) {
 
 	ev.events = event_type;
 	ev.data.fd = fd;
-	return ::epoll_ctl(epollFD_, EPOLL_CTL_ADD, fd, &ev);
+	return ::epoll_ctl(epollfd_, EPOLL_CTL_ADD, fd, &ev);
 }
 
 void	Server::processEvents(int i) {
 	if (handleIO(i) < 0) {
-		if (::epoll_ctl(epollFD_, EPOLL_CTL_DEL, ev_arr_[i].data.fd, NULL) < 0) {
-			::close(ev_arr_[i].data.fd);
-			::close(epollFD_);
+		if (::epoll_ctl(epollfd_, EPOLL_CTL_DEL, ev_arr_[i].data.fd, NULL) < 0) {
+			::close(evArr_[i].data.fd);
+			::close(epollfd_);
 			throw std::runtime_error("epoll_ctl() failed");
 		}
-		::close(ev_arr_[i].data.fd);
+		::close(evArr_[i].data.fd);
 		--count_;
 	}
 }
@@ -150,7 +150,7 @@ int	Server::handleIO(int i) {
 	char	buf[512], *ptr;
 	ssize_t	len;
 
-	if ((len = ::recv(ev_arr_[i].data.fd, buf, sizeof(buf)-1, 0)) == -1) {
+	if ((len = ::recv(evArr_[i].data.fd, buf, sizeof(buf)-1, 0)) == -1) {
 		std::cerr << "recv() failed" << std::endl;
 		return -1;
 	}
@@ -165,7 +165,7 @@ int	Server::handleIO(int i) {
 	std::cerr << "[child" << i << "]" << buf << std::endl;
 	ft_strlcat(buf, ":OK\r\n", sizeof(buf));
 	len = ::strlen(buf);
-	if ((len = ::send(ev_arr_[i].data.fd, buf, len, 0)) == -1) {
+	if ((len = ::send(evArr_[i].data.fd, buf, len, 0)) == -1) {
 		std::cerr << "send() failed" << std::endl;
 		return -1;
 	}

@@ -6,7 +6,7 @@
 /*   By: khanadat <khanadat@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 21:54:04 by khanadat          #+#    #+#             */
-/*   Updated: 2026/06/14 23:04:52 by khanadat         ###   ########.fr       */
+/*   Updated: 2026/06/17 19:38:34 by khanadat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ enum	ChunkedState {
 	CHUNK_END
 };
 
-enum	HandleResult {
-	HR_CONTINUE,
-	HR_CLOSE
-};
-
 class IEpollModifier;
 
 class Connection : public IEventHandler {
@@ -69,6 +64,8 @@ private:
 	ConnState		state_;
 	std::vector<char>	buffIn_;
 	std::vector<char>	buffOut_;
+
+	time_t			lastActive_;
 
 	ParseState		pstate_;
 	ChunkedState		chstate_;
@@ -89,7 +86,7 @@ private:
 public:
 	Connection(int fd, IEpollModifier *iem);
 	~Connection();
-	HandleResult	handle(void);
+	HandleResult	handleEvnet(int fd, uint32_t events);
 };
 
 #endif
