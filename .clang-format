@@ -1,0 +1,37 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+Standard: c++98
+
+PointerAlignment: Right
+AccessModifierOffset: -2
+SpaceAfterCStyleCast: false
+
+
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 120
+
+BreakBeforeBraces: Attach
+
+AllowShortIfStatementsOnASingleLine: false
+
+AlignConsecutiveMacros: true
+AlignTrailingComments: true
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+
+
+QualifierAlignment: Custom
+QualifierOrder: ['type', 'static', 'inline', 'const', 'volatile']
+
+
+SortIncludes: true
+IncludeBlocks: Regroup
+
+IncludeCategories:
+  - Regex:  '^".*"'
+    Priority: 1
+  - Regex:  '^<.*>'
+    Priority: 2
+---
