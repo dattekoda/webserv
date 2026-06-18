@@ -1,3 +1,5 @@
 a.out
 **/*.o
 ./sample/server
+**/.cash
+.cash
