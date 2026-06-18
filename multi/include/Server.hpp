@@ -1,8 +1,10 @@
-#ifndef MANAGER_HPP
-# define MANAGER_HPP
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
 # include "SocketFD.hpp"
 # include "Config.hpp"
+# include "Connection.hpp"
+# include "IEpollModifier.hpp"
 # include <sys/epoll.h>
 # include <vector>
 
@@ -10,20 +12,15 @@
 #  define MAX_CHILD 32
 # endif
 
-class IEpollModifier {
-public:
-	virtual	~IEpollModifier() {}
-
-	virtual int	epollAdd(int fd, uint32_t event) = 0;
-};
-
 class	Server : public IEpollModifier {
-	int		epollFD_;
-	epoll_event	*ev_arr_;
+	int		epollFd_;
+	epoll_event	*evArr_;
 	int		count_;
 	int		nfds_;
 	const Config	*conf_;
-	std::vector<SocketFD*>	socketFDs_;
+
+	std::vector<SocketFD*>		socketFds_;
+	std::map<int, Connection*>	connections_;
 
 	void		handleActions(void);
 
@@ -43,7 +40,9 @@ public:
 	~Server();
 
 	void	run(void);
-	int	epollAdd(int fd, uint32_t event);
+	int	epollAdd(EventContext *ctx, uint32_t event);
+	int	epollMod(EventContext *ctx, uint32_t event);
+	int	epollDel(int fd);
 };
 
 #endif
