@@ -3,3 +3,5 @@ a.out
 ./sample/server
 **/.cash
 .cash
+**/.fuse_hidden*
+.fuse_hidden*

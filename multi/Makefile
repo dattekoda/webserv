@@ -7,10 +7,7 @@ INCFLAGS	=	-Iinclude
 SRCDIR		=	src
 SRCS		=	$(addprefix $(SRCDIR)/, \
 				main.cpp \
-				Config.cpp \
-				Fdlib.cpp \
-				SocketFD.cpp \
-				Server.cpp \
+				SockFd.cpp \
 			)
 
 OBJDIR		=	obj

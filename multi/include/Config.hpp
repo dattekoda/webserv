@@ -1,27 +1,11 @@
 #ifndef CONFIG_HPP
-# define CONFIG_HPP
+#define CONFIG_HPP
 
-# include <vector>
-# include <string>
+#include <string>
 
-struct	ServerConfig;
-struct	Host;
-
-struct	Config {
-	std::vector<ServerConfig>	servers_;
+struct Config {
+public:
+  Config(const std::string &content);
 };
-
-struct	Host {
-	std::string	name_;
-	std::string	addr_;
-	std::string	port_;
-};
-
-struct	ServerConfig {
-	Host	host_;
-};
-
-void	loadConfig(const std::string &file_name, struct Config *conf);
 
 #endif
-
