@@ -1,8 +1,6 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-struct Config {};
-
 class IEpollManager {
 private:
   int efd_;
@@ -15,8 +13,10 @@ public:
 };
 
 class Server : public IEpollManager {
+  const Config *config_;
+
 public:
-  Server(const Config *config);
+  Server(const Config *config) : config_(config){};
 };
 
 #endif
