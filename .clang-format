@@ -1,12 +1,11 @@
 ---
 Language: Cpp
 BasedOnStyle: LLVM
-Standard: c++98
+Standard: Cpp03
 
 PointerAlignment: Right
 AccessModifierOffset: -2
 SpaceAfterCStyleCast: false
-
 
 IndentWidth: 2
 UseTab: Never
@@ -15,16 +14,20 @@ ColumnLimit: 120
 BreakBeforeBraces: Attach
 
 AllowShortIfStatementsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
 
 AlignConsecutiveMacros: true
 AlignTrailingComments: true
-AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
-
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
 
 QualifierAlignment: Custom
 QualifierOrder: ['type', 'static', 'inline', 'const', 'volatile']
 
+BreakBeforeBinaryOperators: NonAssignment
 
 SortIncludes: true
 IncludeBlocks: Regroup

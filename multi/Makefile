@@ -6,7 +6,12 @@ INCFLAGS	=	-Iinclude
 
 SRCDIR		=	src
 SRCS		=	$(addprefix $(SRCDIR)/, \
+							$(addprefix Config/, \
+									Config.cpp \
+									ConfigParser.cpp \
+							) \
 				main.cpp \
+				Server.cpp \
 				SockFd.cpp \
 			)
 

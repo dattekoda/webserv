@@ -4,9 +4,9 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#define FIRSTIP 0xff
+#define FIRSTIP  0xff
 #define SECONDIP 0x00ff
-#define THIRDIP 0x0000ff
+#define THIRDIP  0x0000ff
 #define FOURTHIP 0x000000ff
 #define BUF_SIZE 4096
 

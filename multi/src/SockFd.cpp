@@ -5,11 +5,9 @@ void SockFd::setOptimumSock(addrinfo const *res) {
   int optval = 1;
 
   for (cur = res; cur; cur = cur->ai_next) {
-    if ((fd_ = ::socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol)) <
-        0)
+    if ((fd_ = ::socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol)) < 0)
       continue;
-    if (::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) <
-        0) {
+    if (::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
       ::close(fd_);
       continue;
     }

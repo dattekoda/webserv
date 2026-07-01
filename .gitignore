@@ -1,7 +1,6 @@
 a.out
 **/*.o
 ./sample/server
-**/.cash
-.cash
+**/.cache/
 **/.fuse_hidden*
 .fuse_hidden*
